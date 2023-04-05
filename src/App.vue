@@ -1,28 +1,48 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <ModalWithSlider
+      v-if="modalWindow"
+      :modalData="modalData"
+      @close="modalWindow = false"
+    >
+    </ModalWithSlider>
+    <HeaderMenu v-model="searchedCard" @search-product="giving"></HeaderMenu>
+    <MainWrapper :searchedCard="searchedCard" @show-modal="showModal" />
+    <MainFooter />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import HeaderMenu from "@/components/HeaderMenu.vue";
+import MainWrapper from "@/components/MainWrapper.vue";
+import ModalWithSlider from "@/components/ModalWithSlider.vue";
+import MainFooter from "@/components/MainFooter.vue";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  components: { MainFooter, MainWrapper, HeaderMenu, ModalWithSlider },
+  data() {
+    return {
+      searchedCard: "",
+      modalWindow: false,
+      modalData: {},
+    };
+  },
+  methods: {
+    giving(newSearch) {
+      this.searchedCard = newSearch;
+    },
+    showModal(card) {
+      this.modalWindow = true;
+      this.modalData = card;
+    },
+  },
+  name: "App",
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
